@@ -14,11 +14,10 @@
 
     <View
         android:id="@+id/imageOverlay"
-        android:layout_width="150dp"
+        android:layout_width="@dimen/overlay_width"
         android:layout_height="match_parent"
         android:background="@drawable/image_gradient"
         app:layout_constraintRight_toRightOf="parent" />
-
 
     <TextView
         android:id="@+id/photographer_intro"
@@ -46,8 +45,8 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/translationList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/overlay_width"
+        android:layout_height="256dp"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
@@ -63,5 +62,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--todo remove this after demo -->
+    <Button
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Refresh"/>
 
 </android.support.constraint.ConstraintLayout>

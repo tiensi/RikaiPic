@@ -11,6 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.SerialDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import java.util.*
 
 class RikaiPicPresenter(
         private val view: RikaiPicContract.View,
@@ -23,6 +24,9 @@ class RikaiPicPresenter(
     private val translationsDisposable = SerialDisposable()
     private val pexelsPhotoList: MutableList<PexelsPhoto> = ArrayList()
     private var photoTranslations: MutableList<String> = ArrayList()
+    //todo remove this once carousel is built
+    private val random = Random()
+
 
     override
     fun onCreate() {
@@ -40,7 +44,7 @@ class RikaiPicPresenter(
                                     pexelsPhotoList.clear()
                                     pexelsPhotoList.addAll(pexelsResponse.photos)
                                     //todo apply this to a fragmentlist
-                                    view.showPhoto(pexelsPhotoList[0])
+                                    view.showPhoto(pexelsPhotoList[random.nextInt(pexelsPhotoList.size)])
                                 },
                                 { error ->
                                     Timber.e(error)
@@ -48,6 +52,11 @@ class RikaiPicPresenter(
                                 }
                         )
         )
+    }
+
+    override fun onDestroy() {
+        imageLoadDisposable.dispose()
+        translationsDisposable.dispose()
     }
 
     override fun onImageLoaded(resource: Bitmap) {
@@ -77,7 +86,7 @@ class RikaiPicPresenter(
                                 {
                                     photoTranslations.add(it!!)
                                     view.addLabel(it)
-                                }, Timber::e
+                                }, { Timber.e(it) }
                                 //ignore errors for individual translations
                         )
         )
@@ -87,8 +96,7 @@ class RikaiPicPresenter(
         view.showWikiForText(photoTranslations[position])
     }
 
-
     companion object {
-        const val CONFIDENCE_THRESHOLD = .82
+        const val CONFIDENCE_THRESHOLD = .9
     }
 }

@@ -16,5 +16,6 @@ class RikaiPicContract {
     interface Presenter : TranslationAdapter.TranslationListener {
         fun onCreate()
         fun onImageLoaded(resource: Bitmap)
+        fun onDestroy()
     }
 }

@@ -43,11 +43,13 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
         RikaiPicApp.getComponent(this)
                 .rikaiPicActivity(RikaiPicModule(this))
                 .inject(this)
+
         //Setup Recyclerview
         translationList.setHasFixedSize(true)
         translationList.layoutManager = LinearLayoutManager(this)
         adapter = TranslationAdapter(presenter)
         translationList.adapter = adapter
+
         //Setup translation layout animation
         val collapsed = ConstraintSet()
         collapsed.clone(constraintLayout)
@@ -59,6 +61,13 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
             constraint.applyTo(constraintLayout)
             isExpanded = !isExpanded
         }
+
+        //todo remove after demo
+        update.setOnClickListener {
+            adapter.clear()
+            presenter.onCreate()
+        }
+
         //todo use lifecycle methods
         presenter.onCreate()
     }
@@ -77,7 +86,7 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
     override fun showPhoto(pexelsPhoto: PexelsPhoto) {
         Glide.with(this)
                 .asBitmap()
-                .load(pexelsPhoto.src.tiny)
+                .load(pexelsPhoto.src.large)
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                         presenter.onImageLoaded(resource)
@@ -92,6 +101,11 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
 
     override fun addLabel(text: String) {
         adapter.addLabel(text)
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     override fun showWikiForText(text: String) {

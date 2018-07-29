@@ -46,4 +46,10 @@ class TranslationAdapter(val listener: TranslationListener) : RecyclerView.Adapt
         translations.add(text)
         notifyItemInserted(itemCount - 1)
     }
+
+    fun clear() {
+        val size = translations.size
+        translations.clear()
+        notifyItemRangeRemoved(0, size)
+    }
 }
