@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1081682880999",
+    "firebase_url": "https://rikaipic.firebaseio.com",
+    "project_id": "rikaipic",
+    "storage_bucket": "rikaipic.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081682880999:android:235300dab4779a09",
+        "android_client_info": {
+          "package_name": "com.tiensinoakuma.rikaipic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081682880999-l17d55lii6u5r2kc6s7co91cv77f9dvu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKkzy7FuDy-GQraAZ05zKYFYoHer8W0PA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
