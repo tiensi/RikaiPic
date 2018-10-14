@@ -5,8 +5,4 @@
         android:angle="270"
         android:endColor="#80000000"
         android:startColor="#80000000"/>
-    <corners
-        android:bottomLeftRadius="@dimen/overlay_radius"
-        android:topLeftRadius="@dimen/overlay_radius"
-        />
 </shape>

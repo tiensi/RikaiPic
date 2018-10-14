@@ -52,9 +52,6 @@ class FirebaseVisionApi(
                         visionCloudLabels.forEach {
                             labels.add(FirebaseLabel(it.confidence, it.label))
                         }
-                        labels.forEach {
-                            Timber.e("label is " + it.label + " confidence " + it.confidence)
-                        }
                         labels
                     }
             ).subscribeOn(Schedulers.io())

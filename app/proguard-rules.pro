@@ -26,5 +26,20 @@
   public *;
 }
 
-# for DexGuard only
--keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+#Models
+-keep class com.tiensinoakuma.rikaipic.api.** { *; }
+
+#OkHttp
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+
+#Retrofit
+-dontwarn retrofit2.Platform$Java8
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+#Annotations
+-dontwarn com.google.errorprone.annotations.**

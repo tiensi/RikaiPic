@@ -10,6 +10,7 @@ import com.tiensinoakuma.rikaipic.BuildConfig
 import com.tiensinoakuma.rikaipic.RikaiPicApp
 import com.tiensinoakuma.rikaipic.api.firebase.FirebaseVisionApi
 import com.tiensinoakuma.rikaipic.api.g_translate.GTranslateApi
+import com.tiensinoakuma.rikaipic.api.g_translate.GTranslateSource
 import com.tiensinoakuma.rikaipic.api.pexels.PexelsApi
 import com.tiensinoakuma.rikaipic.dagger.scopes.AppScope
 import dagger.Module
@@ -86,6 +87,12 @@ class NetModule {
                 .client(okHttpClient)
                 .build()
                 .create(PexelsApi::class.java)
+    }
+
+    @Provides
+    @AppScope
+    fun provideGTranslateSource(translationApi: GTranslateApi): GTranslateSource {
+        return GTranslateSource(translationApi)
     }
 
     @Provides

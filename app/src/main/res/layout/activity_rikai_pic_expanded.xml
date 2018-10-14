@@ -17,7 +17,7 @@
         android:layout_width="@dimen/overlay_width"
         android:layout_height="match_parent"
         android:background="@drawable/image_gradient"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/photographer_intro"
@@ -29,8 +29,9 @@
         android:text="@string/photo_credit"
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/imageOverlay"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1" />
 
     <TextView
         android:id="@+id/photographer"
@@ -39,19 +40,35 @@
         android:background="?android:attr/selectableItemBackground"
         android:gravity="center"
         android:textColor="@color/blue"
+        app:layout_constraintBottom_toTopOf="@id/translationList"
         app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photographer_intro" />
+        app:layout_constraintRight_toRightOf="@id/imageOverlay"
+        app:layout_constraintTop_toBottomOf="@id/photographer_intro"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="1" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/translationList"
         android:layout_width="@dimen/overlay_width"
-        android:layout_height="256dp"
+        android:layout_height="wrap_content"
         app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/languageList"
+        app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
+        app:layout_constraintRight_toRightOf="@id/imageOverlay"
+        app:layout_constraintTop_toBottomOf="@id/photographer"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="50" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/languageList"
+        android:layout_width="@dimen/overlay_width"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="@id/imageOverlay"
+        app:layout_constraintTop_toBottomOf="@id/translationList"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        app:layout_constraintVertical_weight="50" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -63,11 +80,14 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--todo remove this after demo -->
-    <Button
-        android:id="@+id/update"
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Refresh"/>
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_refresh_white_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

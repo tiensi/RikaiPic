@@ -42,9 +42,10 @@ class TranslationAdapter(val listener: TranslationListener) : RecyclerView.Adapt
         fun onTranslationClicked(position: Int)
     }
 
-    fun addLabel(text: String) {
-        translations.add(text)
-        notifyItemInserted(itemCount - 1)
+    fun setLabels(labels: List<String>) {
+        translations.clear()
+        translations.addAll(labels)
+        notifyDataSetChanged()
     }
 
     fun clear() {

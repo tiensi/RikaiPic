@@ -10,12 +10,21 @@ class RikaiPicContract {
         fun showPhoto(pexelsPhoto: PexelsPhoto)
         fun showLoading(show: Boolean)
         fun showWikiForText(text: String)
-        fun addLabel(text: String)
+        fun showLabels(labels: List<String>)
+        fun showImagesReady()
+        fun showLoadingScreen()
+        fun enableFab(enable: Boolean)
+        fun clearData()
+        fun setSupportedLanguages(supportedLanguages: List<String>, defaultLanguage: String)
+        fun enableSupportedLanguages(isClickable: Boolean)
+        fun enableLanguageClick(isClickable: Boolean)
     }
 
-    interface Presenter : TranslationAdapter.TranslationListener {
+    interface Presenter : TranslationAdapter.TranslationListener, LanguageAdapter.LanguageListener {
         fun onCreate()
-        fun onImageLoaded(resource: Bitmap)
+        fun onLargeImageLoaded(resource: Bitmap)
         fun onDestroy()
+        fun onNextSelected()
+        fun onOriginalImageLoaded()
     }
 }

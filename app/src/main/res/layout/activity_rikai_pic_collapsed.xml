@@ -1,69 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/rikaiPic"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:src="@drawable/test" />
+        android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/imageOverlay"
-        android:layout_width="@dimen/overlay_width"
-        android:layout_height="match_parent"
-        android:background="@drawable/image_gradient"
-        app:layout_constraintLeft_toRightOf="parent" />
+        <ImageView
+            android:id="@+id/rikaiPic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:src="@drawable/test" />
 
-    <TextView
-        android:id="@+id/photographer_intro"
+        <View
+            android:id="@+id/imageOverlay"
+            android:layout_width="@dimen/overlay_width"
+            android:layout_height="match_parent"
+            android:background="@drawable/image_gradient"
+            app:layout_constraintRight_toLeftOf="parent" />
+
+        <TextView
+            android:id="@+id/photographer_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:text="@string/photo_credit"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/photographer"
+            app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
+            app:layout_constraintRight_toRightOf="@id/imageOverlay"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintVertical_weight="1" />
+
+        <TextView
+            android:id="@+id/photographer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:textColor="@color/blue"
+            app:layout_constraintBottom_toTopOf="@id/translationList"
+            app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
+            app:layout_constraintRight_toRightOf="@id/imageOverlay"
+            app:layout_constraintTop_toBottomOf="@id/photographer_intro"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintVertical_weight="1" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/translationList"
+            android:layout_width="@dimen/overlay_width"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toTopOf="@id/languageList"
+            app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
+            app:layout_constraintRight_toRightOf="@id/imageOverlay"
+            app:layout_constraintTop_toBottomOf="@id/photographer"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintVertical_weight="5" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/languageList"
+            android:layout_width="@dimen/overlay_width"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
+            app:layout_constraintRight_toRightOf="@id/imageOverlay"
+            app:layout_constraintTop_toBottomOf="@id/translationList"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            app:layout_constraintVertical_weight="5" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="center"
-        android:text="@string/photo_credit"
-        android:textColor="@color/white"
-        app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_refresh_white_24dp" />
 
-    <TextView
-        android:id="@+id/photographer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground"
-        android:gravity="center"
-        android:textColor="@color/blue"
-        app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintTop_toBottomOf="@id/photographer_intro" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/translationList"
-        android:layout_width="@dimen/overlay_width"
-        android:layout_height="256dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/imageOverlay"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--todo remove this after demo -->
-    <Button
-        android:id="@+id/update"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Refresh"/>
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -3,16 +3,22 @@ package com.tiensinoakuma.rikaipic.ui
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.constraint.ConstraintSet
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.transition.TransitionManager
 import android.view.View
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import com.tiensinoakuma.rikaipic.BuildConfig
 import com.tiensinoakuma.rikaipic.R
@@ -28,10 +34,14 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
 
     @Inject
     lateinit var presenter: RikaiPicContract.Presenter
-    private lateinit var adapter: TranslationAdapter
+    private lateinit var translationAdapter: TranslationAdapter
+    private lateinit var languageAdapter: LanguageAdapter
     private var isExpanded: Boolean = false
+    private var largeBitmap: Bitmap? = null
 
     companion object {
+        const val MAX_SPAN = 3
+
         fun startActivity(context: Context) {
             context.startActivity(Intent(context, RikaiPicActivity::class.java))
         }
@@ -44,11 +54,11 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
                 .rikaiPicActivity(RikaiPicModule(this))
                 .inject(this)
 
-        //Setup Recyclerview
+        //Setup translations list
         translationList.setHasFixedSize(true)
         translationList.layoutManager = LinearLayoutManager(this)
-        adapter = TranslationAdapter(presenter)
-        translationList.adapter = adapter
+        translationAdapter = TranslationAdapter(presenter)
+        translationList.adapter = translationAdapter
 
         //Setup translation layout animation
         val collapsed = ConstraintSet()
@@ -62,20 +72,41 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
             isExpanded = !isExpanded
         }
 
-        //todo remove after demo
-        update.setOnClickListener {
-            adapter.clear()
-            presenter.onCreate()
+        fab.setOnClickListener {
+            presenter.onNextSelected()
         }
 
         //todo use lifecycle methods
         presenter.onCreate()
     }
 
-    override fun showErrorRetry(error: Throwable, retry: Runnable) {
+    override fun setSupportedLanguages(supportedLanguages: List<String>, defaultLanguage: String) {
+        languageList.setHasFixedSize(true)
+        languageAdapter = LanguageAdapter(presenter, defaultLanguage, supportedLanguages)
+        languageList.layoutManager = GridLayoutManager(this, MAX_SPAN)
+        languageList.adapter = languageAdapter
+    }
+
+    override fun enableLanguageClick(isClickable: Boolean) {
+        languageAdapter.isClickable = false
+    }
+
+    override fun showImagesReady() {
+        fab.isEnabled = false
+    }
+
+    override fun showLoadingScreen() {
+        //todo
+    }
+
+    override fun enableFab(enable: Boolean) {
+        fab.isEnabled = enable
+    }
+
+    override fun showErrorRetry(error: Throwable, runnable: Runnable) {
         Timber.e(error)
         Snackbar.make(constraintLayout, R.string.something_went_wrong, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.retry, { _ -> retry.run() })
+                .setAction(R.string.retry, { _ -> runnable.run() })
                 .show()
     }
 
@@ -89,18 +120,41 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
                 .load(pexelsPhoto.src.large)
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                        presenter.onImageLoaded(resource)
+                        largeBitmap = resource
+                        presenter.onLargeImageLoaded(resource)
                     }
                 })
-        Glide.with(this).load(pexelsPhoto.src.original).into(rikaiPic)
+        Glide.with(this)
+                .load(pexelsPhoto.src.original)
+                .listener(object : RequestListener<Drawable> {
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        presenter.onOriginalImageLoaded()
+                        return false
+                    }
+
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        return false
+                    }
+                }).into(rikaiPic)
         photographer.text = pexelsPhoto.photographer
         photographer.setOnClickListener {
             startActivityFromUrl(pexelsPhoto.url)
         }
     }
 
-    override fun addLabel(text: String) {
-        adapter.addLabel(text)
+    override fun showLabels(labels: List<String>) {
+        translationAdapter.setLabels(labels)
+    }
+
+    override fun enableSupportedLanguages(isClickable: Boolean) {
+        languageAdapter.isClickable = true
+    }
+
+    override fun clearData() {
+        translationAdapter.clear()
+        if (largeBitmap != null) {
+            largeBitmap?.recycle()
+        }
     }
 
     override fun onDestroy() {
@@ -113,4 +167,5 @@ class RikaiPicActivity : AppCompatActivity(), RikaiPicContract.View {
     }
 
     private fun startActivityFromUrl(url: String) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+
 }
